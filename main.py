@@ -1,4 +1,3 @@
-import load_imdb
 import imdb
-a=load_imdb.import_imdb()
-imdb.process_imdb(a[0],a[1],a[2])
+(names, casts, titlebasics)=imdb.import_imdb_data()
+(title_list, popular_count)=imdb.count_popular_cast(names, casts, titlebasics)

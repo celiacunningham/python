@@ -1,26 +1,38 @@
-def process_imdb2(names, casts, titlebasics):
-    #select names where knownForTitles has 1 or more values
-    popular_names=names[names['knownForTitles']!='\\N']
-    print('popular names set')
-    #popular_names.primaryName
+import numpy as np
+import pandas as pd
 
-    #for each title, how many cast members are popular names?
+def import_imdb_data():
+#load those data files
+
+    filename_namebasics='C:\\Users\\cecunningham\\Downloads\\namebasics.tsv'
+    filename_titleprincipals='C:\\Users\\cecunningham\\Downloads\\titleprincipals.tsv'
+    filename_titlebasics='C:\\Users\\cecunningham\\Downloads\\titlebasics.tsv'
+    print("Loading '%s' ..."%filename_namebasics)
+    names = pd.read_csv(filename_namebasics, sep='\t')
+    print("Loading '%s' ..."%filename_titleprincipals)
+    casts = pd.read_csv(filename_titleprincipals, sep='\t')
+    print("Loading '%s' ..."%filename_titlebasics)
+    titlebasics = pd.read_csv(filename_titlebasics, sep='\t')
+    print("Loading complete")
+    return (names, casts, titlebasics)
+
+def count_popular_cast(names, casts, titlebasics):
+#for each title, how many cast members are known for something?
+
     title_set=set(casts['tconst'])
     title_list=list(title_set) # list of unique titles
-    print('unique titles set')
-    for t in title_list[6380994:6381994]:
-        #print("title '%s"%t)
-        c=casts[casts['tconst']==t] #list the cast
-        for n in c['nconst']:
-            if n in popular_names['nconst']:
-                print(popular_names[popular_names['nconst']==n]['primaryName'])
-                #titlebasics[titlebasics['tconst']==titles]['popular_name_count']=titlebasics[titlebasics['tconst']==titles]['popular_name_count']+1
-
+    nt=len(title_list)
+    popular_count=np.zeros(nt)
+    for t in range(nt-10,nt):
+        cast=casts[casts['tconst']==title_list[t]] #list the cast in each title
+        for cast_member in cast['nconst']:
+            if all(names[names['nconst']==cast_member]['knownForTitles']!='\\N'): #select names where knownForTitles has 1 or more values
+                popular_count[t]=popular_count[t]+1 # add one count for each popular cast members
     print("Cast check complete")
-    return
+    #print(popular_count[nt-10:])
+
+    return (title_list, popular_count)
 
     #collect most popular titleprincipals:tconst
 
     #for each tconst, lookup titlebasics:primaryTitle
-
-

@@ -1,38 +1,41 @@
-import numpy as np
-import pandas as pd
+import numpy
+import pandas
+
 
 def import_imdb_data():
-#load those data files
+    # load those data files
 
-    filename_namebasics='C:\\Users\\celia\\Documents\\imdb\\namebasics.tsv'
-    filename_titleprincipals='C:\\Users\\celia\\Documents\\imdb\\titleprincipals.tsv'
-    filename_titlebasics='C:\\Users\\celia\\Documents\\imdb\\titlebasics.tsv'
-    print("Loading '%s' ..."%filename_namebasics)
-    names = pd.read_csv(filename_namebasics, sep='\t')
-    print("Loading '%s' ..."%filename_titleprincipals)
-    casts = pd.read_csv(filename_titleprincipals, sep='\t')
-    print("Loading '%s' ..."%filename_titlebasics)
-    titlebasics = pd.read_csv(filename_titlebasics, sep='\t')
+    filename_name_basics = 'C:\\Users\\celia\\Documents\\imdb\\namebasics.tsv'
+    filename_title_principals = 'C:\\Users\\celia\\Documents\\imdb\\titleprincipals.tsv'
+    filename_title_basics = 'C:\\Users\\celia\\Documents\\imdb\\titlebasics.tsv'
+    print("Loading '%s' ..." % filename_name_basics)
+    names = pandas.read_csv(filename_name_basics, sep='\t')
+    print("Loading '%s' ..." % filename_title_principals)
+    casts = pandas.read_csv(filename_title_principals, sep='\t')
+    print("Loading '%s' ..." % filename_title_basics)
+    title_basics = pandas.read_csv(filename_title_basics, sep='\t')
     print("Loading complete")
-    return (names, casts, titlebasics)
+    return names, casts, title_basics
 
-def count_popular_cast(names, casts, titlebasics):
-#for each title, how many cast members are known for something?
 
-    title_set=set(casts['tconst'])
-    title_list=list(title_set) # list of unique titles
-    nt=len(title_list)
-    popular_count=np.zeros(nt)
-    for t in range(nt-10,nt):
-        cast=casts[casts['tconst']==title_list[t]] #list the cast in each title
+def count_popular_cast(names, casts):
+    # for each title, how many cast members are known for something?
+
+    title_set = set(casts['tconst'])
+    title_list = list(title_set)  # list of unique titles
+    nt = len(title_list)
+    popular_count = numpy.zeros(nt)
+    for t in range(nt - 10, nt):
+        cast = casts[casts['tconst'] == title_list[t]]  # list the cast in each title
         for cast_member in cast['nconst']:
-            if all(names[names['nconst']==cast_member]['knownForTitles']!='\\N'): #select names where knownForTitles has 1 or more values
-                popular_count[t]=popular_count[t]+1 # add one count for each popular cast members
+            if all(names[names['nconst'] == cast_member][
+                       'knownForTitles'] != '\\N'):  # select names where knownForTitles has 1 or more values
+                popular_count[t] = popular_count[t] + 1  # add one count for each popular cast members
     print("Cast check complete")
-    #print(popular_count[nt-10:])
+    # print(popular_count[nt-10:])
 
-    return (title_list, popular_count)
+    return title_list, popular_count
 
-    #collect most popular titleprincipals:tconst
+    # collect most popular title_principals:tconst
 
-    #for each tconst, lookup titlebasics:primaryTitle
+    # for each tconst, lookup title_basics:primaryTitle

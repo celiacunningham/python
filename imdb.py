@@ -4,9 +4,9 @@ import pandas as pd
 def import_imdb_data():
 #load those data files
 
-    filename_namebasics='C:\\Users\\cecunningham\\Downloads\\namebasics.tsv'
-    filename_titleprincipals='C:\\Users\\cecunningham\\Downloads\\titleprincipals.tsv'
-    filename_titlebasics='C:\\Users\\cecunningham\\Downloads\\titlebasics.tsv'
+    filename_namebasics='C:\\Users\\celia\\Documents\\imdb\\namebasics.tsv'
+    filename_titleprincipals='C:\\Users\\celia\\Documents\\imdb\\titleprincipals.tsv'
+    filename_titlebasics='C:\\Users\\celia\\Documents\\imdb\\titlebasics.tsv'
     print("Loading '%s' ..."%filename_namebasics)
     names = pd.read_csv(filename_namebasics, sep='\t')
     print("Loading '%s' ..."%filename_titleprincipals)
